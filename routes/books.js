@@ -3,7 +3,7 @@ const router = express.Router();
 const Books = require("../models/book");
 // Get books titles
 router.get("/", async (req, res, next) => {
-  const books = await Books.find();
+  const books = await Books.find().populate("author");
   res.json(books);
 });
 
