@@ -22,6 +22,19 @@ router.post("/", async (req, res, next) => {
   res.json({ message: `created a new book sucessfully` });
 });
 
+router.get("/:id", async (req, res, next) => {
+  try {
+    const author = await Author.findById(req.params.id);
+    const books = await Book.find({ author: req.params.id });
+    res.json({
+      ...author.toJSON(),
+      books: books
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.put("/:id", (req, res, next) => {
   res.json({ message: `update book with id ${req.params.id}` });
 });

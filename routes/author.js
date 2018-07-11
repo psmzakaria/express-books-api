@@ -16,4 +16,9 @@ router.get("/", async (req, res, next) => {
   const author = await Author.find();
   res.json(author);
 });
+router.get("/", async (req, res, next) => {
+  const author = await Author.find();
+  res.json(author);
+});
+
 module.exports = router;
