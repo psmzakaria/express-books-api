@@ -7,10 +7,6 @@ router.get("/", async (req, res, next) => {
   res.json(books);
 });
 
-router.get("/:id", (req, res, next) => {
-  res.json({ message: `get book with id ${req.params.id}` });
-});
-
 // Post books
 router.post("/", async (req, res, next) => {
   const newBook = new Books({
@@ -19,17 +15,13 @@ router.post("/", async (req, res, next) => {
   });
   await newBook.save();
 
-  res.json({ message: `created a new book sucessfully` });
+  res.status(201).json({ message: `created a new book sucessfully` });
 });
-
+// GET books by :id
 router.get("/:id", async (req, res, next) => {
   try {
-    const author = await Author.findById(req.params.id);
-    const books = await Book.find({ author: req.params.id });
-    res.json({
-      ...author.toJSON(),
-      books: books
-    });
+    const book = await Books.findById(req.params.id);
+    res.json(book);
   } catch (error) {
     next(error);
   }
@@ -43,4 +35,7 @@ router.delete("/:id", (req, res, next) => {
   res.json({ message: `delete book with id ${req.params.id}` });
 });
 
-module.exports = router;
+module.exports = app => {
+  app.use(express.json());
+  app.use("/books", router);
+};

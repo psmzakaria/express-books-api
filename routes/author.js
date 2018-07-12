@@ -9,16 +9,19 @@ router.post("/", async (req, res, next) => {
   });
   await newAuthor.save();
 
-  res.json({ message: `created a new Author sucessfully` });
+  res.status(201).json({ message: `created a new Author sucessfully` });
 });
 
 router.get("/", async (req, res, next) => {
   const author = await Author.find();
-  res.json(author);
+  res.status(200).json(author);
 });
 router.get("/", async (req, res, next) => {
   const author = await Author.find();
   res.json(author);
 });
 
-module.exports = router;
+module.exports = app => {
+  app.use(express.json());
+  app.use("/authors", router);
+};
